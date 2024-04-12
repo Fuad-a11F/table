@@ -4,12 +4,14 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 import { Button, Grid } from "@mui/material";
 import useTrainingStore from "../store/useTrainingStore";
 import "./style.css";
+import { useRef } from "react";
 
 const TrainingProgram = () => {
   const { trainingData, tableTrainingColumn, addTrainingData } =
     useTrainingStore();
 
-  console.log(trainingData);
+  const ref = useRef();
+
   const groupRowAggNodes = (nodes) => {
     const result = {};
 
@@ -24,11 +26,19 @@ const TrainingProgram = () => {
 
     return result;
   };
+
   const defaultColDef = {
     sortable: true,
     filter: true,
     flex: 1,
   };
+
+  const onSelectionChange = () => {
+    const selectedRows = ref.current!.api.getSelectedRows();
+
+    console.log(selectedRows);
+  };
+
   return (
     <div>
       <div
@@ -52,6 +62,8 @@ const TrainingProgram = () => {
               checkbox: true,
             },
           }}
+          ref={ref}
+          onSelectionChanged={onSelectionChange}
           // onRowSelected={(e) => console.log(e.data)}
           // onCellClicked={(e) => console.log(e.data)}
           // onCellValueChanged={() => alert("dsf")}
