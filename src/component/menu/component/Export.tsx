@@ -6,6 +6,8 @@ import {
   FormGroup,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
+import useTrainingStore from "../../../modules/main/store/useTrainingStore.ts";
+import useTablesStore from "../../../modules/main/store.ts";
 import {useState} from "react";
 import * as XLSX from 'xlsx'
 
@@ -17,12 +19,26 @@ interface FormData {
 const Export = () => {
   const { control, handleSubmit } = useForm<FormData>();
 const [data, setData] = useState<any>()
+  const { deleteAllData, trainingData } = useTrainingStore();
+  const { foodTable, trainingTable } = useTablesStore();
 
   const onSubmit = (data) => {
-    console.log(data);
-  };
+    // Выбираем формат экспорта (CSV, Excel и т. д.)
+    const exportParams = {
+      fileName: "exportedData", // Имя файла
+      sheetName: "Sheet1", // Имя листа (только для Excel)
+    };
 
-  const clearAllTables = () => {};
+    console.log(trainingTable.api);
+
+    trainingTable?.api.exportDataAsCsv(exportParams);
+    foodTable?.api.exportDataAsCsv(exportParams);
+
+    // gridOptions.api.exportDataAsExcel(exportParams); // для экспорта в Excel
+    // gridOptions.api.exportDataAsExcelCustom(exportParams); // для дополнительных настроек Excel
+    // gridOptions.api.exportDataAsPdf(exportParams); // для экспорта в PDF
+    // gridOptions.api.exportDataAsJson(exportParams); // для экспорта в JSON
+  };
 
   const handleFielUpload = (e) => {
       const reader = new FileReader()
@@ -76,7 +92,12 @@ const [data, setData] = useState<any>()
         </Button>
       </form>
 
-      <Button variant="contained" sx={{ mt: 2 }} onClick={clearAllTables}>
+      <Button
+        variant="contained"
+        sx={{ mt: 2 }}
+        disabled={trainingData.length === 0}
+        onClick={deleteAllData}
+      >
         Удалить все
       </Button>
 

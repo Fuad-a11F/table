@@ -1,10 +1,13 @@
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import useTablesStore from "../store.ts";
 
 const FoodProgram = () => {
   const [rowData] = useState([]);
+  const { setFoodTable } = useTablesStore();
+  const ref = useRef();
 
   const [colDefs] = useState([
     { field: "make", headerName: "Упражнение" },
@@ -19,6 +22,10 @@ const FoodProgram = () => {
     },
   ]);
 
+  useEffect(() => {
+    setFoodTable(ref.current);
+  }, [setFoodTable]);
+
   return (
     <div
       className="ag-theme-alpine-dark"
@@ -26,6 +33,7 @@ const FoodProgram = () => {
     >
       <AgGridReact
         rowData={rowData}
+        ref={ref}
         columnDefs={colDefs}
         // onRowSelected={(e) => console.log(e.data)}
         // onCellClicked={(e) => console.log(e.data)}
