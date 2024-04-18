@@ -5,6 +5,7 @@ import AIForm from "./component/AIForm";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { variants, variantsButton } from "./variants";
+import arrow from './assets/arrow-right.svg'
 
 const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,12 +36,12 @@ const Menu = () => {
       </AnimatePresence>
 
       <motion.div
-        className={styles.menu_open}
+        className={isOpen ? styles.menu_close : styles.menu_open}
         variants={variantsButton}
         initial={"initial"}
         animate={isOpen ? "show" : "hide"}
       >
-        <button onClick={() => setIsOpen(!isOpen)}>Open</button>
+            <img src={arrow} width={30}  alt="" onClick={() => setIsOpen(!isOpen)}/>
       </motion.div>
 
       <motion.div

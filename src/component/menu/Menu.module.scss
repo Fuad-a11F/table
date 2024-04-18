@@ -11,6 +11,24 @@
     position: fixed;
     transform: translateY(-50%);
     z-index: 13;
+    cursor: pointer;
+
+    & img {
+      transition: 1s;
+    }
+  }
+
+  &_close {
+    top: 50%;
+    position: fixed;
+    transform: translateY(-50%);
+    z-index: 13;
+    cursor: pointer;
+
+    & img {
+      transition: 1s;
+      transform: rotate(180deg);
+    }
   }
 
   &_flex {
